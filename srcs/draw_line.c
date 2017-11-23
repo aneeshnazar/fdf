@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 00:00:40 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/18 20:55:06 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/20 20:40:19 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	draw_line(t_wf *wf, int i, int j)
 	it = 0;
 	while (it <= inp.dx)
 	{
-		place_at(wf, wf->midpoint.x + inp.p1.x, wf->midpoint.y + inp.p1.y);
+//		place_at(wf, wf->midpoint.x + inp.p1.x, wf->midpoint.y + inp.p1.y);
+		place_at(wf, inp.p1.x, inp.p1.y);
 //		wf->pic[inp.p1.x + (inp.p1.y * wf->s_line / 4)] = LINE_COLOR;
 		while (inp.err >= 0)
 		{

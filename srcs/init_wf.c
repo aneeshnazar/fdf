@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/08 19:41:19 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/18 20:13:23 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/22 20:15:58 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,7 @@ static void	pexit(void)
 	perror("The following error occurred:");
 	exit(0);
 }
-/*
-static int	get_list_len(char **strlst)
-{
-	int		i;
 
-	i = 0;
-	while (strlst[i])
-		++i;
-	return (i);
-}
-*/
 static int	ft_intlen(int num)
 {
 	int		i;
@@ -44,20 +34,6 @@ static int	ft_intlen(int num)
 
 static int	*str_to_ia(char *str, int *len)
 {
-/*	char	**strlst;
-	int		*out;
-	int		i;
-
-	strlst = ft_split_by_function(str, &ft_iswhitespace);
-	*len = get_list_len(strlst);
-	i = 0;
-	out = (int *)ft_memalloc(sizeof(int) * *len);
-	while (i < *len)
-	{
-		out[i] = ft_atoi(strlst[i]);
-		++i;
-	}
-	return (out);*/
 	int		i;
 	int		*out;
 
@@ -105,8 +81,6 @@ int			init_img(t_wf *wf)
 	img_h = wf->win_height;
 	wf->img = mlx_new_image(wf->mlx, img_w, img_h);
 	wf->pic = (int *)mlx_get_data_addr(wf->img, &wf->bits, &wf->s_line, &wf->endian);
-	for (int i = 0; i < img_h * img_w; ++i)
-		wf->pic[i] = 0x333333;
 	return (img_w / (wf->width + 1));
 }
 
@@ -130,11 +104,11 @@ t_wf		init_wf(int	fd, int num_lines)
 	out.win_width = 1000;
 	out.win_height = 1000;
 	out.midpoint = init_coord(out.win_width / 2, out.win_height / 2);
-	out.mid = init_coord(out.width / 2, out.height / 2);
 	fill_table(&out, str);
 	out.mlx = mlx_init();
 	out.win = mlx_new_window(out.mlx, out.win_width, out.win_height, "fdf");
 	out.zoom = init_img(&out);
 	out.margin = out.zoom / 2;
+	out.mid = init_coord(out.width * out.zoom / 2, out.height * out.zoom / 2);
 	return (out);
 }

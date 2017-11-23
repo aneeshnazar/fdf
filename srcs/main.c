@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 23:58:56 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/19 13:47:09 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/22 21:11:28 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,19 @@ void	place_at(t_wf *wf, int x, int y)
 void	draw_wf(t_wf wf)
 {
 	for (int i = 0; i < wf.height * wf.width; ++i)
-		//place_at(&wf, wf.flat_points[i].x, wf.flat_points[i].y);
-		place_at(&wf, wf.midpoint.x + wf.flat_points[i].x, wf.midpoint.y + wf.flat_points[i].y);
-/*	for (int j = 0; j < wf.height * wf.width; ++j)
+		place_at(&wf, wf.flat_points[i].x, wf.flat_points[i].y);
+}
+
+//void	apply_zoom(t_wf *wf, int x, int y)
+void	apply_zoom(t_wf *wf)
+{
+	for (int i = 0; i < wf->height * wf->width; ++i)
 	{
-		if (j + 1 < wf.width * (wf.flat_points[j].y + 1))
-			draw_line(&wf, j, j + 1);
-		if (j + wf.width < wf.height * wf.width)
-			draw_line(&wf, j, j + wf.width);
-	}*/
+		wf->flat_points[i].x = (wf->points[i].x) * wf->zoom;
+		wf->flat_points[i].y = (wf->points[i].y) * wf->zoom;
+	}
+//	(void)x;
+//	(void)y;
 }
 
 void	init_points(t_wf *wf)
@@ -52,16 +56,12 @@ void	init_points(t_wf *wf)
 		while (x < wf->width)
 		{	
 			wf->points[i] = init_tricoord(x, y, wf->table[y][x]);
-			wf->flat_points[i] = init_coord((x + 1) * wf->zoom - wf->midpoint.x, (y + 1) * wf->zoom - wf->midpoint.y);
-			ft_putnbr(wf->flat_points[i].x);
-			ft_putchar(':');
-			ft_putnbr(wf->flat_points[i].y);
-			ft_putchar('\n');
 			++i;
 			++x;
 		}
 		++y;
 	}
+	apply_zoom(wf);
 }
 
 static int        close_window(t_wf *view)
@@ -71,30 +71,101 @@ static int        close_window(t_wf *view)
 	return (1);
 }
 
-int		zoom(int button, int x, int y, t_wf *param)
-{
-	(void) x;
-	(void) y;
-	if (button == 5)
-		param->zoom -= 1;
-	else if (button == 4)
-		param->zoom += 1;
-	init_points(param);
-	init_img(param);
-	draw_wf(*param);
-	mlx_put_image_to_window(param->mlx, param->win, param->img, 0, 0);
-	mlx_destroy_image(param->mlx, param->img);
-	return (1);
-}
-
 int		translate(int x_mov, int y_mov, t_wf *wf)
 {
 	for (int i = 0; i < wf->height * wf->width; ++i)
 		wf->flat_points[i] = init_coord(wf->flat_points[i].x + x_mov, wf->flat_points[i].y + y_mov);
-	init_img(wf);
-	draw_wf(*wf);
-	mlx_put_image_to_window(wf->mlx, wf->win, wf->img, 0, 0);
-	mlx_destroy_image(wf->mlx, wf->img);
+//	wf->midpoint.x += x_mov;
+//	wf->midpoint.y += y_mov;
+	return (0);
+}
+
+void	draw_axis(t_wf *param, t_bres inp)
+{
+	int		it;
+	
+	it = 0;
+	while (it <= inp.dx)
+	{
+		place_at(param, inp.p1.x, inp.p1.y);
+		while (inp.err >= 0)
+		{
+			if (inp.swap)
+				inp.p1.x += inp.sx;
+			else
+			{
+				inp.p1.y += inp.sy;
+				inp.err -= 2 * inp.dx;
+			}
+		}
+		if (inp.swap)
+			inp.p1.y += inp.sy;
+		else
+			inp.p1.x += inp.sx;
+		inp.err += 2 * inp.dy;
+		++it;
+	}
+}
+
+void	draw_axes(t_wf *param)
+{
+	t_bres	inp1;
+	t_bres	inp2;
+
+	inp1 = init_bres(init_coord((param->win_width) / 2, 0), init_coord((param->win_width) / 2, param->win_height - 1));
+	inp2 = init_bres(init_coord(0, (param->win_height) / 2), init_coord(param->win_width - 1, (param->win_height) / 2));
+	draw_axis(param, inp1);
+	draw_axis(param, inp2);
+}
+void	redraw(t_wf *param)
+{
+	init_img(param);
+	draw_wf(*param);
+//	draw_axes(param); 
+	mlx_put_image_to_window(param->mlx, param->win, param->img, 0, 0);
+	mlx_destroy_image(param->mlx, param->img);
+}
+
+void	recalc_mp(t_wf *param)
+{
+	t_coord	ltc;
+	t_coord	rbc;
+	t_coord	mid;
+
+	rbc = param->flat_points[param->width * param->height - 1];
+	ltc = param->flat_points[0];
+	mid = init_coord(ltc.x + (rbc.x - ltc.x) / 2, ltc.y + (rbc.y - ltc.y) / 2);
+	param->mid = mid;
+}
+
+void	center(t_wf *param)
+{
+	int	x_mov;
+	int	y_mov;
+
+	apply_zoom(param);
+	recalc_mp(param);
+	x_mov = param->midpoint.x - param->mid.x;
+	y_mov = param->midpoint.y - param->mid.y;
+	translate(x_mov, y_mov, param);
+}
+
+int		zoom(int button, t_wf *param)
+{
+	if (button == 5)
+		param->zoom -= 1;
+	else if (button == 4)
+		param->zoom += 1;
+	center(param);
+	return (1);
+}
+
+int		mouse_event(int button, int x, int y, t_wf *param)
+{
+	(void) x;
+	(void) y;
+	zoom(button, param);
+	redraw(param);
 	return (0);
 }
 
@@ -107,11 +178,14 @@ int		key_event(int keycode, t_wf *wf)
 	y_mov = 0;
 	if (keycode == 53)
 		exit(0);
-	x_mov = (keycode == 123 ? -wf->zoom/10 : x_mov);
-	x_mov = (keycode == 124 ? wf->zoom/10 : x_mov);
-	y_mov = (keycode == 126 ? -wf->zoom/10 : y_mov);
-	y_mov = (keycode == 125 ? wf->zoom/10 : y_mov);
+	x_mov = (keycode == 123 ? -wf->zoom : x_mov);
+	x_mov = (keycode == 124 ? wf->zoom : x_mov);
+	y_mov = (keycode == 126 ? -wf->zoom : y_mov);
+	y_mov = (keycode == 125 ? wf->zoom : y_mov);
 	translate(x_mov, y_mov, wf);
+	wf->midpoint.x += x_mov;
+	wf->midpoint.y += y_mov;
+	redraw(wf);
 	return (0);
 }
 
@@ -127,10 +201,12 @@ int		main(int argc, char **argv)
 		fd = open(argv[1], O_RDONLY);
 		wf = init_wf(fd, num_lines);
 		init_points(&wf);
-		draw_wf(wf);
+	/*	draw_wf(wf);
 		mlx_put_image_to_window(wf.mlx, wf.win, wf.img, 0, 0);
-		mlx_destroy_image(wf.mlx, wf.img);
-		mlx_mouse_hook(wf.win, zoom, &wf);
+		mlx_destroy_image(wf.mlx, wf.img);*/
+		center(&wf);
+		redraw(&wf);
+		mlx_mouse_hook(wf.win, mouse_event, &wf);
 		mlx_key_hook(wf.win, key_event, &wf);
 		mlx_hook(wf.win, 17, 0, close_window, &wf);
 		mlx_loop(wf.mlx);
