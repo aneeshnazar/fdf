@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/08 19:41:19 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/22 20:15:58 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/27 22:18:06 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ static int	*str_to_ia(char *str, int *len)
 	int		*out;
 
 	i = 0;
-	*len = ft_countif_f(str, &ft_isdigit);
+	*len = ft_countif_f(str, &ft_iswhitespace);
 	out = (int *)ft_memalloc(sizeof(int) * *len);
 	while (*str)
 	{
-		if (ft_isdigit(*str))
+		if (!ft_iswhitespace(*str))
 		{
 			out[i] = ft_atoi(str);
 			str += ft_intlen(out[i]);
@@ -69,7 +69,7 @@ static void	fill_table(t_wf *wf, char **str)
 		++i;
 	}
 	wf->points = (t_ri_coord *)ft_memalloc(sizeof(t_ri_coord) * ((wf->height) * (wf->width)));
-	wf->flat_points = (t_coord *)ft_memalloc(sizeof(t_coord) * ((wf->height) * (wf->width)));
+	wf->flat_points = (t_ri_coord *)ft_memalloc(sizeof(t_ri_coord) * ((wf->height) * (wf->width)));
 }
 
 int			init_img(t_wf *wf)

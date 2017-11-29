@@ -6,19 +6,23 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 15:59:28 by anazar            #+#    #+#             */
-/*   Updated: 2017/09/07 23:58:35 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/27 20:00:35 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_bres		init_bres(t_coord p1, t_coord p2)
+t_bres		init_bres(t_ri_coord p1, t_ri_coord p2)
+//t_bres		init_bres(t_coord p1, t_coord p2)
 {
 	t_bres	ret;
-	int		tmp;
+	//int		tmp;
+	double		tmp;
 
-	ret.p1 = min_c(p1, p2);
-	ret.p2 = max_c(p1, p2);
+//	ret.p1 = min_c(p1, p2);
+//	ret.p2 = max_c(p1, p2);
+	ret.p1 = p1;
+	ret.p2 = p2;
 	ret.dx = iabs(p2.x - p1.x);
 	ret.dy = iabs(p2.y - p1.y);
 	ret.sx = sign(p2.x - p1.x);

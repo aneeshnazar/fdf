@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/05 10:14:28 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/16 17:34:27 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/27 22:15:55 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ int					ft_is_in(char c, char *str);
 
 int					ft_countif(char *str, char c);
 
-int					ft_countif_f(char *str, int (*f)(int));
+int					ft_countif_f(char *str, int (*f)(char));
 
 char				*ft_strjoinfree(char *s1, char *s2);
 
