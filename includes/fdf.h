@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 23:52:38 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/28 11:26:22 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/28 18:56:59 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,12 @@ typedef struct	s_wf
 	int			*pic;
 	int			win_width;
 	int			win_height;
-	int			clicked;
+	int			lclicked;
+	int			rclicked;
 	t_coord		midpoint;
 	t_coord		mid;
 	t_coord		last_mouse_pos;
+	t_coord		offset;
 	t_ri_coord	*points;
 	t_ri_coord	rotation;
 	t_ri_coord	*flat_points;

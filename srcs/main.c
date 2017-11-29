@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 23:58:56 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/28 12:31:35 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/28 19:02:11 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int		translate(int x_mov, int y_mov, t_wf *wf)
 //	wf->midpoint.y += y_mov;
 	return (0);
 }
-
+/*
 void	draw_axis(t_wf *param, t_bres inp)
 {
 	int		it;
@@ -145,7 +145,8 @@ void	draw_axis(t_wf *param, t_bres inp)
 		++it;
 	}
 }
-
+*/
+/*
 void	draw_axes(t_wf *param)
 {
 	t_bres	inp1;
@@ -158,6 +159,8 @@ void	draw_axes(t_wf *param)
 	draw_axis(param, inp1);
 	draw_axis(param, inp2);
 }
+*/
+
 void	redraw(t_wf *param)
 {
 	init_img(param);
@@ -207,9 +210,12 @@ int		mouse_event(int button, int x, int y, t_wf *param)
 {
 	if (button == 1)
 	{
-		param->last_mouse_pos = init_coord(x, y);
-		param->clicked = 1;
+		param->lclicked = 1;
+		param->offset = init_coord(param->midpoint.x - x, param->midpoint.y - y);
 	}
+	else if (button == 2)
+		param->rclicked = 1;
+	param->last_mouse_pos = init_coord(x, y);
 	zoom(button, param);
 	redraw(param);
 	return (0);
@@ -224,11 +230,13 @@ int		motion_event(int x, int y, t_wf *param)
 	z_rot = 0;
 	if (x < param->win_width && y < param->win_height)
 	{
-		if (param->clicked)
+		if (param->rclicked)
 		{
 			z_rot = (x - param->last_mouse_pos.x) / 2; 
 			x_rot = (param->last_mouse_pos.y - y) / 2;
 		}
+		else if (param->lclicked)
+			param->midpoint = init_coord(x + param->offset.x, y + param->offset.y);
 		param->last_mouse_pos = init_coord(x, y);
 	}
 	rotate(param, x_rot, z_rot);
@@ -240,10 +248,10 @@ int		motion_event(int x, int y, t_wf *param)
 int		un_mouse_event(int button, int x, int y, t_wf *param)
 {
 	if (button == 1)
-	{
-		param->last_mouse_pos = init_coord(x, y);
-		param->clicked = 0;
-	}
+		param->lclicked = 0;
+	else if (button == 2)
+		param->rclicked = 0;
+	param->last_mouse_pos = init_coord(x, y);
 	zoom(button, param);
 	redraw(param);
 	return (0);
@@ -332,7 +340,8 @@ int		main(int argc, char **argv)
 		mlx_destroy_image(wf.mlx, wf.img);*/
 		center(&wf);
 		redraw(&wf);
-		wf.clicked = 0;
+		wf.lclicked = 0;
+		wf.rclicked = 0;
 		wf.rotation = init_tricoord(0,0,0);
 //		mlx_mouse_hook(wf.win, mouse_event, &wf);
 //		mlx_key_hook(wf.win, key_event, &wf);
