@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 00:00:40 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/27 20:39:21 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/29 18:19:02 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,17 @@
   }
   }*/
 
+unsigned int	avg(unsigned int c1, unsigned int c2)
+{
+	t_color	new;
+
+	new.r = (c1 / 0x10000 + c2 / 0x10000) / 2;
+	new.g = ((c1 % 0x10000) / 0x100 + (c2 % 0x10000) / 0x100) / 2;
+	new.b = (c1 % 0x100 + c2 % 0x100) / 2;
+	new.val = new.r << 16 | new.g << 8 | new.b;
+	return (new.val);
+}
+
 void	draw_line(t_wf *wf, int i, int j)
 {
 	t_bres	inp;
@@ -51,7 +62,7 @@ void	draw_line(t_wf *wf, int i, int j)
 	while (it <= inp.dx)
 	{
 //		place_at(wf, wf->midpoint.x + inp.p1.x, wf->midpoint.y + inp.p1.y);
-		place_at(wf, inp.p1.x, inp.p1.y);
+		place_at(wf, inp.p1.x, inp.p1.y, avg(inp.p1.color, inp.p2.color));
 //		wf->pic[inp.p1.x + (inp.p1.y * wf->s_line / 4)] = LINE_COLOR;
 //`		while (inp.err >= 0)
 		while (inp.err > 0)
