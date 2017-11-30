@@ -6,7 +6,7 @@
 #    By: anazar <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/07 19:19:24 by anazar            #+#    #+#              #
-#    Updated: 2017/11/29 18:57:21 by anazar           ###   ########.fr        #
+#    Updated: 2017/11/29 20:30:19 by anazar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,9 @@ INC_DIR = includes/
 LIB_DIR = libft/
 SRC_DIR = srcs/
 MLX_DIR = minilibx/
-FILES = draw_line get_num_lines iabs init_bres init_coord init_tricoord init_wf main sign init_img # max_c min_c 
+FILES = draw_line get_num_lines iabs init_bres init_coord init_tricoord init_wf \
+	   	main sign init_img place_at mouse_events redraw zoom center \
+		apply_zoom translate key_events	
 SRC = $(addprefix $(SRC_DIR), $(patsubst %, %.c, $(FILES)))
 OBJ = $(patsubst %, %.o, $(FILES))
 FLAGS = -Wall -Werror -Wextra -c -I$(INC_DIR) -I$(LIB_DIR)$(INC_DIR) -I$(MLX_DIR) 

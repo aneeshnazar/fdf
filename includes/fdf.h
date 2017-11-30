@@ -6,14 +6,22 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 23:52:38 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/29 19:02:14 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/29 20:31:10 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 # define LINE_COLOR	0x0032CD32
-
+# define PI 3.141592653589793
+# define RAD(x) (x * PI / 180)
+# define FPX wf->flat_points[i].x
+# define FPY wf->flat_points[i].y
+# define FPZ wf->flat_points[i].z
+# define FP_COL wf->flat_points[i].color
+# define X wf->points[i].x
+# define Y wf->points[i].y
+# define Z wf->points[i].z
 # include <mlx.h>
 # include <libft.h>
 # include <fcntl.h>
@@ -92,4 +100,16 @@ int					get_num_lines(char *str);
 t_wf				init_wf(int fd, int num_lines);
 void				place_at(t_wf *wf, int x, int y, unsigned int color);
 t_color				init_color(int r, int g, int b);
+
+int					mouse_event(int button, int x, int y, t_wf *wf);
+int					motion_event(int x, int y, t_wf *wf);
+int					un_mouse_event(int button, int x, int y, t_wf *wf);
+int					key_event(int keycode);
+int					close_window(t_wf *view);
+
+void				redraw(t_wf *wf);
+int					zoom(int button, t_wf *wf);
+void				center(t_wf *wf);
+void				apply_zoom(t_wf *wf);
+void				translate(int x_mov, int y_mov, t_wf *wf);
 #endif
