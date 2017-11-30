@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/08 19:41:19 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/27 22:18:06 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/29 19:00:35 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,23 +68,12 @@ static void	fill_table(t_wf *wf, char **str)
 		wf->width = ft_max(len, wf->width);
 		++i;
 	}
-	wf->points = (t_ri_coord *)ft_memalloc(sizeof(t_ri_coord) * ((wf->height) * (wf->width)));
-	wf->flat_points = (t_ri_coord *)ft_memalloc(sizeof(t_ri_coord) * ((wf->height) * (wf->width)));
+	wf->size = wf->height * wf->width;
+	wf->points = (t_ri_coord *)ft_memalloc(sizeof(t_ri_coord) * wf->size);
+	wf->flat_points = (t_ri_coord *)ft_memalloc(sizeof(t_ri_coord) * wf->size);
 }
 
-int			init_img(t_wf *wf)
-{
-	int		img_w;
-	int		img_h;
-
-	img_w = wf->win_width;
-	img_h = wf->win_height;
-	wf->img = mlx_new_image(wf->mlx, img_w, img_h);
-	wf->pic = (int *)mlx_get_data_addr(wf->img, &wf->bits, &wf->s_line, &wf->endian);
-	return (img_w / (wf->width + 1));
-}
-
-t_wf		init_wf(int	fd, int num_lines)
+t_wf		init_wf(int fd, int num_lines)
 {
 	t_wf	out;
 	char	**str;
