@@ -6,7 +6,7 @@
 #    By: anazar <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/07 19:19:24 by anazar            #+#    #+#              #
-#    Updated: 2017/11/29 20:30:19 by anazar           ###   ########.fr        #
+#    Updated: 2017/11/30 17:41:41 by anazar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ lib:
 
 $(NAME):	$(OBJ)
 	@$(MAKE) lib
-	@make -C $(MLX_DIR)
+	@make -C $(MLX_DIR) re
 	@gcc $(OBJ) $(LFLAG) -o $(NAME)
 
 $(OBJ):		$(SRC)

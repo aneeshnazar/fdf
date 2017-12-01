@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 23:58:56 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/30 16:19:41 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/30 17:39:57 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,22 @@ void	init_points(t_wf *wf)
 	apply_zoom(wf);
 }
 
-int		hooks(t_wf *wf)
+void	init_hooks(t_wf *wf)
 {
-	mlx_do_key_autorepeatoff(wf->mlx);
 	mlx_hook(wf->win, 2, 0, key_event, wf);
 	mlx_hook(wf->win, 4, 0, mouse_event, wf);
 	mlx_hook(wf->win, 5, 0, un_mouse_event, wf);
 	mlx_hook(wf->win, 6, 0, motion_event, wf);
 	mlx_hook(wf->win, 17, 0, close_window, wf);
+	mlx_hook(wf->win, 12, 0, expose_event, wf);
+}
+
+int		hooks(t_wf *wf)
+{
+	if (!wf->draw)
+		return (0);
+	redraw(wf);
+	wf->draw = 0;
 	return (0);
 }
 
@@ -62,7 +70,8 @@ int		main(int argc, char **argv)
 	wf.rclicked = 0;
 	wf.rotation = init_tricoord(21, 0, 42, 0);
 	center(&wf);
-	redraw(&wf);
+	expose_event(&wf);
+	init_hooks(&wf);
 	mlx_loop_hook(wf.mlx, hooks, &wf);
 	mlx_loop(wf.mlx);
 }

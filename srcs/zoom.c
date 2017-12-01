@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/29 19:43:05 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/29 19:43:57 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/30 17:11:28 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int		zoom(int button, t_wf *wf)
 {
 	if (button == 5)
-		wf->zoom -= 1;
+		wf->zoom -= 5;
 	else if (button == 4)
-		wf->zoom += 1;
+		wf->zoom += 5;
 	center(wf);
 	return (1);
 }

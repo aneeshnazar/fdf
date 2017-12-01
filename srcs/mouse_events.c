@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/29 19:38:04 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/29 20:28:30 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/30 17:29:25 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		mouse_event(int button, int x, int y, t_wf *wf)
 		wf->rclicked = 1;
 	wf->last_mouse_pos = init_coord(x, y);
 	zoom(button, wf);
-	redraw(wf);
+	wf->draw = 1;
 	return (0);
 }
 
@@ -50,10 +50,10 @@ int		motion_event(int x, int y, t_wf *wf)
 		else if (wf->lclicked)
 			wf->midpoint = init_coord(x + wf->offset.x, y + wf->offset.y);
 		wf->last_mouse_pos = init_coord(x, y);
+		wf->draw = 1;
 	}
 	rotate(wf, x_rot, z_rot);
 	zoom(0, wf);
-	redraw(wf);
 	return (0);
 }
 
@@ -65,6 +65,6 @@ int		un_mouse_event(int button, int x, int y, t_wf *wf)
 		wf->rclicked = 0;
 	wf->last_mouse_pos = init_coord(x, y);
 	zoom(button, wf);
-	redraw(wf);
+	wf->draw = 1;
 	return (0);
 }

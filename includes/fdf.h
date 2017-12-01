@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 23:52:38 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/30 16:19:12 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/30 17:08:12 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct		s_wf
 	int				size;
 	int				win_width;
 	int				win_height;
+	int				draw;
 	int				lclicked;
 	int				rclicked;
 	t_coord			midpoint;
@@ -102,6 +103,7 @@ void				place_at(t_wf *wf, int x, int y, unsigned int color);
 t_color				init_color(int r, int g, int b);
 
 int					mouse_event(int button, int x, int y, t_wf *wf);
+int					expose_event(t_wf *wf);
 int					motion_event(int x, int y, t_wf *wf);
 int					un_mouse_event(int button, int x, int y, t_wf *wf);
 int					key_event(int keycode);

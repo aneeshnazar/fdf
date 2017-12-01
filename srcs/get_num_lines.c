@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/08 21:24:36 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/30 16:35:15 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/30 18:22:52 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,33 @@ int		valid_file(char *str)
 		return (0);
 }
 
-int		get_num_lines(int argc, char **argv)
+int		valid_line(char *str)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = 0;
+	while (str[i])
+	{
+		if (!ft_is_in(str[i], "0123456789 \t-"))
+			return (0);
+		if (ft_is_in(str[i], "-0123456789"))
+			++len;
+		else
+		{
+			if (len >= 10)
+				return (0);
+			len = 0;
+		}
+		++i;
+	}
+	return (len < 10);
+}
+
+int		init_validation(int argc, char **argv, int *n_numbers)
 {
 	int		fd;
-	int		count;
 	char	*buf;
 
 	if (argc != 2)
@@ -44,11 +67,34 @@ int		get_num_lines(int argc, char **argv)
 		ft_error("Invalid filename!");
 	if ((fd = open(argv[1], O_RDONLY)) < 0)
 		ft_error("file error!");
-	count = 0;
+	get_next_line(fd, &buf);
+	*n_numbers = ft_countif_f(buf, &ft_iswhitespace);
+	if (!buf)
+		ft_error("Empty File!");
+	if (!valid_line(buf))
+		ft_error("Invalid line!");
+	ft_strdel(&buf);
+	return (fd);
+}
+
+int		get_num_lines(int argc, char **argv)
+{
+	int		fd;
+	int		count;
+	int		n_numbers;
+	char	*buf;
+
+	fd = init_validation(argc, argv, &n_numbers);
+	count = 1;
 	while (get_next_line(fd, &buf))
 	{
+		if (!valid_line(buf))
+			ft_error("Invalid characters!");
+		if (n_numbers != ft_countif_f(buf, &ft_iswhitespace))
+			ft_error("Invalid number of columns!");
 		ft_strdel(&buf);
 		++count;
 	}
+	close(fd);
 	return (count);
 }
