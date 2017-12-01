@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 23:58:56 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/29 20:32:54 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/30 16:19:41 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,15 @@ int		main(int argc, char **argv)
 	t_wf	wf;
 	int		num_lines;
 
-	if (argc == 2)
-	{
-		num_lines = get_num_lines(argv[1]);
-		fd = open(argv[1], O_RDONLY);
-		wf = init_wf(fd, num_lines);
-		init_points(&wf);
-		wf.lclicked = 0;
-		wf.rclicked = 0;
-		wf.rotation = init_tricoord(21, 0, 42, 0);
-		center(&wf);
-		redraw(&wf);
-		mlx_loop_hook(wf.mlx, hooks, &wf);
-		mlx_loop(wf.mlx);
-	}
+	num_lines = get_num_lines(argc, argv);
+	fd = open(argv[1], O_RDONLY);
+	wf = init_wf(fd, num_lines);
+	init_points(&wf);
+	wf.lclicked = 0;
+	wf.rclicked = 0;
+	wf.rotation = init_tricoord(21, 0, 42, 0);
+	center(&wf);
+	redraw(&wf);
+	mlx_loop_hook(wf.mlx, hooks, &wf);
+	mlx_loop(wf.mlx);
 }

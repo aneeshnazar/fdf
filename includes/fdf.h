@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 23:52:38 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/29 20:31:10 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/30 16:19:12 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_coord				init_coord(int x, int y);
 t_ri_coord			init_tricoord(int x, int y, int z, unsigned int color);
 void				draw_line(t_wf *wf, int i, int j);
 int					init_img(t_wf *wf);
-int					get_num_lines(char *str);
+int					get_num_lines(int argc, char **argv);
 t_wf				init_wf(int fd, int num_lines);
 void				place_at(t_wf *wf, int x, int y, unsigned int color);
 t_color				init_color(int r, int g, int b);
