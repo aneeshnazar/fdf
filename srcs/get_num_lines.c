@@ -6,7 +6,7 @@
 /*   By: anazar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/08 21:24:36 by anazar            #+#    #+#             */
-/*   Updated: 2017/11/30 18:22:52 by anazar           ###   ########.fr       */
+/*   Updated: 2017/11/30 19:52:11 by anazar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,12 @@ int		valid_line(char *str)
 	{
 		if (!ft_is_in(str[i], "0123456789 \t-"))
 			return (0);
-		if (ft_is_in(str[i], "-0123456789"))
+		if (ft_is_in(str[i], "0123456789"))
 			++len;
+		else if (str[i] == '-' && !ft_is_in(str[i + 1], "0123456789"))
+			return (0);
+		else if (str[i] == '-' && i > 0 && str[i - 1] != ' ')
+			return (0);
 		else
 		{
 			if (len >= 10)
@@ -96,5 +100,7 @@ int		get_num_lines(int argc, char **argv)
 		++count;
 	}
 	close(fd);
+	if (n_numbers == 1 && count == 1)
+		ft_error("You can't draw a wireframe with one point!");
 	return (count);
 }
